@@ -1,0 +1,280 @@
+graph TB
+    subgraph "Frontend Layer - React Dashboard"
+        subgraph "User Interface"
+            ED[Executive Dashboard<br/>KPI Cards & Metrics]
+            AM[Agents Management<br/>Monitor & Control]
+            AN[Analytics Views<br/>Charts & Reports]
+            SE[Settings<br/>Configuration]
+        end
+        
+        subgraph "Frontend Services"
+            FS1[API Client<br/>Axios/Fetch]
+            FS2[WebSocket Client<br/>Real-time Updates]
+            FS3[State Management<br/>Zustand/Context]
+            FS4[Router<br/>React Router]
+        end
+        
+        subgraph "UI Components"
+            UC1[Reusable Components<br/>Atomic Design]
+            UC2[Charts Library<br/>Recharts]
+            UC3[Animation Library<br/>Framer Motion]
+            UC4[Icon Library<br/>Lucide React]
+        end
+    end
+    
+    subgraph "API Gateway & Load Balancer"
+        ALB[Application Load Balancer<br/>nginx/HAProxy]
+        AG[API Gateway<br/>FastAPI/Express]
+        AU[Authentication<br/>JWT/OAuth2]
+        AR[Rate Limiting<br/>Redis]
+    end
+    
+    subgraph "Backend Services Layer"
+        subgraph "Core APIs"
+            API1[Dashboard API<br/>FastAPI]
+            API2[Agents API<br/>FastAPI]
+            API3[Analytics API<br/>FastAPI]
+            API4[WebSocket Service<br/>Socket.IO]
+        end
+        
+        subgraph "Business Logic"
+            BL1[Supply Chain Logic<br/>Python]
+            BL2[Data Processing<br/>Pandas/NumPy]
+            BL3[Validation Layer<br/>Pydantic]
+            BL4[Business Rules<br/>Rule Engine]
+        end
+    end
+    
+    subgraph "AI Agent Orchestration Layer"
+        subgraph "Agent Orchestrator"
+            AO[Central Orchestrator<br/>AutoGen/CrewAI]
+            TC[Task Coordinator<br/>Async Python]
+            LB[Load Balancer<br/>Round Robin]
+            SM[State Manager<br/>Redis]
+        end
+        
+        subgraph "Message Queue System"
+            MQ1[Redis Pub/Sub<br/>Real-time Events]
+            MQ2[RabbitMQ<br/>Task Queues]
+            MQ3[Apache Kafka<br/>Data Streams]
+        end
+    end
+    
+    subgraph "AI Agents Cluster"
+        subgraph "Procurement Agent Pod"
+            PA[Procurement Agent<br/>Llama 3.1 8B Local]
+            PAM[Vector Memory<br/>ChromaDB]
+            PAF[Agent Functions<br/>Python Tools]
+        end
+        
+        subgraph "Logistics Agent Pod"
+            LA[Logistics Agent<br/>Llama 3.1 8B Local]
+            LAM[Vector Memory<br/>ChromaDB]
+            LAO[Route Optimizer<br/>OR-Tools]
+        end
+        
+        subgraph "Risk Management Pod"
+            RA[Risk Agent<br/>Llama 3.1 8B Local]
+            RAM[Vector Memory<br/>ChromaDB]
+            RAP[ML Pipeline<br/>scikit-learn]
+        end
+    end
+    
+    subgraph "Data Processing Pipeline"
+        subgraph "Data Ingestion"
+            DI1[IoT Data Simulator<br/>Python Scripts]
+            DI2[External APIs<br/>Weather/Financial]
+            DI3[Supplier Integrations<br/>EDI/REST]
+            DI4[Manual Data Entry<br/>Web Forms]
+        end
+        
+        subgraph "Stream Processing"
+            SP1[Kafka Consumers<br/>Python]
+            SP2[Data Validation<br/>Great Expectations]
+            SP3[Feature Engineering<br/>Custom Pipeline]
+            SP4[Real-time Analytics<br/>Stream Processing]
+        end
+        
+        subgraph "Batch Processing"
+            BP1[Airflow DAGs<br/>Workflow Orchestration]
+            BP2[ETL Jobs<br/>Python/Pandas]
+            BP3[ML Training<br/>Scheduled Jobs]
+            BP4[Report Generation<br/>Automated Reports]
+        end
+    end
+    
+    subgraph "Data Storage Layer"
+        subgraph "Primary Databases"
+            DB1[PostgreSQL<br/>Transactional Data<br/>Suppliers, Orders, Users]
+            DB2[InfluxDB<br/>Time Series Data<br/>IoT Sensors, Metrics]
+        end
+        
+        subgraph "Analytics & Cache"
+            DB3[DuckDB<br/>Analytics Workload<br/>Feature Store]
+            DB4[Redis<br/>Cache & Sessions<br/>Agent State]
+        end
+        
+        subgraph "File Storage"
+            FS[Local File System<br/>Documents, Logs<br/>CSV/Parquet Files]
+        end
+    end
+    
+    subgraph "External Integrations"
+        subgraph "APIs"
+            EXT1[Weather API<br/>OpenWeatherMap]
+            EXT2[Financial Data<br/>Alpha Vantage]
+            EXT3[News API<br/>NewsAPI]
+            EXT4[Maps API<br/>OpenStreetMap]
+        end
+        
+        subgraph "Enterprise Systems"
+            ERP[ERP Systems<br/>SAP/Oracle]
+            SP[Supplier Portals<br/>B2B Integration]
+            WMS[Warehouse Systems<br/>WMS Integration]
+        end
+    end
+    
+    subgraph "Infrastructure & Deployment"
+        subgraph "Development"
+            DEV[Local Docker<br/>Development Stack]
+            TEST[Testing<br/>Unit & Integration]
+        end
+        
+        subgraph "Production Options"
+            PROD1[Railway/Render<br/>Free Tier Hosting]
+            PROD2[Oracle Cloud<br/>Always Free Tier]
+            PROD3[AWS Free Tier<br/>t2.micro instances]
+        end
+        
+        subgraph "Monitoring"
+            MON1[Grafana<br/>Dashboards]
+            MON2[Prometheus<br/>Metrics Collection]
+            MON3[Custom Logging<br/>Python Logging]
+        end
+    end
+    
+    %% Frontend connections
+    ED --> FS1
+    AM --> FS1
+    AN --> FS1
+    SE --> FS1
+    
+    ED --> FS2
+    AM --> FS2
+    
+    FS1 --> FS3
+    FS2 --> FS3
+    
+    %% API Gateway connections
+    FS1 --> ALB
+    FS2 --> ALB
+    ALB --> AG
+    AG --> AU
+    AG --> AR
+    
+    %% Backend API connections
+    AG --> API1
+    AG --> API2
+    AG --> API3
+    AG --> API4
+    
+    API1 --> BL1
+    API2 --> BL1
+    API3 --> BL2
+    
+    BL1 --> BL3
+    BL2 --> BL3
+    
+    %% Agent orchestration connections
+    API2 --> AO
+    AO --> TC
+    AO --> LB
+    AO --> SM
+    
+    AO <--> MQ1
+    AO <--> MQ2
+    AO <--> MQ3
+    
+    %% Agent connections
+    AO --> PA
+    AO --> LA
+    AO --> RA
+    
+    PA <--> PAM
+    PA <--> PAF
+    
+    LA <--> LAM
+    LA <--> LAO
+    
+    RA <--> RAM
+    RA <--> RAP
+    
+    %% Data pipeline connections
+    DI1 --> SP1
+    DI2 --> SP1
+    DI3 --> SP1
+    DI4 --> SP1
+    
+    SP1 --> SP2
+    SP2 --> SP3
+    SP3 --> SP4
+    
+    SP4 --> DB1
+    SP4 --> DB2
+    SP4 --> DB3
+    SP4 --> DB4
+    
+    BP1 --> BP2
+    BP2 --> BP3
+    BP3 --> BP4
+    
+    %% Database connections
+    BL1 <--> DB1
+    BL2 <--> DB1
+    BL1 <--> DB4
+    BL2 <--> DB4
+    
+    PA <--> DB1
+    PA <--> DB4
+    
+    LA <--> DB1
+    LA <--> DB2
+    LA <--> DB4
+    
+    RA <--> DB1
+    RA <--> DB3
+    RA <--> DB4
+    
+    %% External connections
+    DI2 --> EXT1
+    DI2 --> EXT2
+    DI2 --> EXT3
+    DI2 --> EXT4
+    
+    DI3 --> ERP
+    DI3 --> SP
+    DI3 --> WMS
+    
+    %% Infrastructure
+    ALB --> PROD1
+    ALB --> PROD2
+    ALB --> PROD3
+    
+    API1 --> MON1
+    API2 --> MON2
+    API3 --> MON3
+    
+    %% Styling
+    classDef frontend fill:#e3f2fd,stroke:#0277bd,stroke-width:2px
+    classDef api fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef agent fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef data fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef external fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef infra fill:#f1f8e9,stroke:#689f38,stroke-width:2px
+    
+    class ED,AM,AN,SE,FS1,FS2,FS3,FS4,UC1,UC2,UC3,UC4 frontend
+    class ALB,AG,AU,AR,API1,API2,API3,API4,BL1,BL2,BL3,BL4 api
+    class AO,TC,LB,SM,MQ1,MQ2,MQ3,PA,LA,RA,PAM,LAM,RAM,PAF,LAO,RAP agent
+    class DI1,DI2,DI3,DI4,SP1,SP2,SP3,SP4,BP1,BP2,BP3,BP4,DB1,DB2,DB3,DB4,FS data
+    class EXT1,EXT2,EXT3,EXT4,ERP,SP,WMS external
+    class DEV,TEST,PROD1,PROD2,PROD3,MON1,MON2,MON3 infra

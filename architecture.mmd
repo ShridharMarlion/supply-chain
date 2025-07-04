@@ -1,0 +1,153 @@
+graph TB
+    subgraph "Agent Orchestration Layer"
+        AO[Agent Orchestrator<br/>AutoGen/CrewAI]
+        
+        subgraph "Message Bus"
+            MB1[Redis Pub/Sub]
+            MB2[RabbitMQ]
+            MB3[Kafka Streams]
+        end
+        
+        subgraph "Coordination Services"
+            CS1[Task Scheduler]
+            CS2[Load Balancer]
+            CS3[State Manager]
+            CS4[Event Router]
+        end
+    end
+    
+    subgraph "AI Agents"
+        subgraph "Procurement Agent"
+            PA[Procurement Agent<br/>Llama 3.1 8B]
+            PAM[Memory Store<br/>ChromaDB]
+            PAT[Tools & Functions]
+            PAC[Config Manager]
+        end
+        
+        subgraph "Logistics Agent"
+            LA[Logistics Agent<br/>Llama 3.1 8B]
+            LAM[Memory Store<br/>ChromaDB]
+            LAT[OR-Tools Optimizer]
+            LAC[Route Config]
+        end
+        
+        subgraph "Risk Management Agent"
+            RA[Risk Agent<br/>Llama 3.1 8B]
+            RAM[Memory Store<br/>ChromaDB]
+            RAT[ML Models<br/>scikit-learn]
+            RAC[Risk Parameters]
+        end
+    end
+    
+    subgraph "Data Layer"
+        subgraph "Real-time Data"
+            RT1[IoT Sensors<br/>FastAPI]
+            RT2[External APIs<br/>Weather/Financial]
+            RT3[Supplier Portals<br/>EDI/REST]
+        end
+        
+        subgraph "Processing Pipeline"
+            PP1[Kafka Consumer]
+            PP2[Data Validation]
+            PP3[Feature Engineering]
+            PP4[Stream Analytics]
+        end
+        
+        subgraph "Storage Systems"
+            ST1[PostgreSQL<br/>Transactional]
+            ST2[InfluxDB<br/>Time Series]
+            ST3[DuckDB<br/>Analytics]
+            ST4[Redis<br/>Cache]
+        end
+    end
+    
+    subgraph "Communication Flow"
+        CF1[Agent Registration]
+        CF2[Task Assignment]
+        CF3[Status Updates]
+        CF4[Result Aggregation]
+        CF5[Error Handling]
+    end
+    
+    %% Orchestrator connections
+    AO --> PA
+    AO --> LA
+    AO --> RA
+    
+    %% Message Bus connections
+    AO <--> MB1
+    AO <--> MB2
+    AO <--> MB3
+    
+    %% Coordination Services
+    AO --> CS1
+    AO --> CS2
+    AO --> CS3
+    AO --> CS4
+    
+    %% Agent internal connections
+    PA <--> PAM
+    PA <--> PAT
+    PA <--> PAC
+    
+    LA <--> LAM
+    LA <--> LAT
+    LA <--> LAC
+    
+    RA <--> RAM
+    RA <--> RAT
+    RA <--> RAC
+    
+    %% Data flow
+    RT1 --> PP1
+    RT2 --> PP1
+    RT3 --> PP1
+    
+    PP1 --> PP2
+    PP2 --> PP3
+    PP3 --> PP4
+    
+    PP4 --> ST1
+    PP4 --> ST2
+    PP4 --> ST3
+    PP4 --> ST4
+    
+    %% Agent data access
+    PA <--> ST1
+    PA <--> ST4
+    
+    LA <--> ST1
+    LA <--> ST2
+    LA <--> ST4
+    
+    RA <--> ST1
+    RA <--> ST3
+    RA <--> ST4
+    
+    %% Communication flows
+    CF1 --> AO
+    AO --> CF2
+    CF2 --> PA
+    CF2 --> LA
+    CF2 --> RA
+    
+    PA --> CF3
+    LA --> CF3
+    RA --> CF3
+    CF3 --> AO
+    
+    AO --> CF4
+    CF4 --> CF5
+    
+    %% Styling
+    classDef orchestrator fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef agent fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef data fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
+    classDef message fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef coordination fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    
+    class AO orchestrator
+    class PA,LA,RA,PAM,LAM,RAM,PAT,LAT,RAT,PAC,LAC,RAC agent
+    class RT1,RT2,RT3,PP1,PP2,PP3,PP4,ST1,ST2,ST3,ST4 data
+    class MB1,MB2,MB3 message
+    class CS1,CS2,CS3,CS4,CF1,CF2,CF3,CF4,CF5 coordination
